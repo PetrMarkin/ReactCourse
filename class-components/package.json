@@ -9,11 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format:fix": "prettier . --write",
     "preview": "vite preview",
-    "prepare": "cd .. && husky CLASS-COMPONENTS/./husky"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "npm run lint",
-    "*.{js,jsx,ts,tsx,html,css}": "npm run format:fix"
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^18.3.1",
