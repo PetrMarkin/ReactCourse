@@ -38,7 +38,7 @@ export async function getPeople(): Promise<ResponseData> {
   };
 
   const response = await fetch(url, requestOptions);
-  const responseData: ResponseData = await response.json();
+  const responseData: ResponseData = (await response.json()) as ResponseData;
   if (!response.ok) {
     throw new Error('An error occurred while searching people.');
   }
@@ -58,7 +58,7 @@ export async function searchPeople(people: string): Promise<ResponseData> {
   };
 
   const response = await fetch(url, requestOptions);
-  const responseData: ResponseData = await response.json();
+  const responseData: ResponseData = (await response.json()) as ResponseData;
   if (!response.ok) {
     throw new Error('An error occurred while searching people.');
   }

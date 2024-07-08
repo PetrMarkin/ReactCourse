@@ -7,7 +7,6 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  false?: boolean;
 }
 
 class ErrorBoundary extends React.Component<Props, State> {

@@ -27,14 +27,22 @@ class App extends React.Component<object, AppState> {
     const savedSearchTerm = localStorage.getItem('searchTerm');
     if (savedSearchTerm) {
       this.setState({ searchTerm: savedSearchTerm }, () => {
-        this.fetchResults(savedSearchTerm);
+        this.fetchResults(savedSearchTerm)
+          .then()
+          .catch((error) => {
+            console.error('Error in handleSearchClick:', error);
+          });
       });
     } else {
-      this.fetchResults();
+      this.fetchResults()
+        .then()
+        .catch((error) => {
+          console.error('Error in handleSearchClick:', error);
+        });
     }
   }
 
-  fetchResults = async (query = '') => {
+  fetchResults = async (query = ''): Promise<void> => {
     this.setState({ isLoading: true });
     try {
       const data = query ? await searchPeople(query.trim()) : await getPeople();
@@ -47,8 +55,13 @@ class App extends React.Component<object, AppState> {
   };
 
   handleSearch = () => {
-    this.fetchResults(this.state.searchTerm);
-    localStorage.setItem('searchTerm', this.state.searchTerm);
+    this.fetchResults(this.state.searchTerm)
+      .then(() => {
+        localStorage.setItem('searchTerm', this.state.searchTerm);
+      })
+      .catch((error) => {
+        console.error('Error in handleSearchClick:', error);
+      });
   };
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
