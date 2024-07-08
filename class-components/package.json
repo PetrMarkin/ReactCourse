@@ -12,10 +12,8 @@
     "prepare": "cd .. && husky CLASS-COMPONENTS/./husky"
   },
   "lint-staged": {
-    "lint-staged": {
-      "*.{js,jsx,ts,tsx}": "npm run lint",
-      "*.{js,jsx,ts,tsx,html,css}": "npm run format:fix"
-    }
+    "*.{js,jsx,ts,tsx}": "npm run lint",
+    "*.{js,jsx,ts,tsx,html,css}": "npm run format:fix"
   },
   "dependencies": {
     "react": "^18.3.1",
