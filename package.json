@@ -17,8 +17,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
