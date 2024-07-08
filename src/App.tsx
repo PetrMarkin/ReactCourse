@@ -9,7 +9,7 @@ interface AppState {
   searchTerm: string;
   results: Result[];
   throwError: boolean;
-  isLoading: any;
+  isLoading: boolean;
 }
 
 class App extends React.Component<object, AppState> {
