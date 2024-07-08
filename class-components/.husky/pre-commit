@@ -1,6 +1,3 @@
-{
-  "lint-staged": {
-    "src//*.{ts,tsx,html,css}": "prettier --write",
-    "src//*.{ts,tsx}": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
-  }
-}
+# ./husky
+cd CLASS-COMPONENTS
+npx lint-staged
