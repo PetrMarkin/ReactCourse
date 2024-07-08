@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button';
 
 interface SearchSectionProps {
   searchTerm: string;
@@ -18,8 +19,8 @@ class SearchSection extends React.Component<SearchSectionProps> {
           onChange={onChange}
           placeholder='Search your character'
         />
-        <button onClick={onSearch}>Search</button>
-        <button onClick={onThrowError}>Throw Error</button>
+        <Button onClick={onSearch}>Search</Button>
+        <Button onClick={onThrowError}>Throw Error</Button>
       </div>
     );
   }
