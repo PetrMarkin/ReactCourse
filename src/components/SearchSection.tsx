@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './Button';
+import SearchInput from './SearchInput';
 
 interface SearchSectionProps {
   searchTerm: string;
@@ -8,22 +9,19 @@ interface SearchSectionProps {
   onThrowError: () => void;
 }
 
-class SearchSection extends React.Component<SearchSectionProps> {
-  render() {
-    const { searchTerm, onSearch, onChange, onThrowError } = this.props;
-    return (
-      <div className='top-section'>
-        <input
-          type='text'
-          value={searchTerm}
-          onChange={onChange}
-          placeholder='Search your character'
-        />
-        <Button onClick={onSearch}>Search</Button>
-        <Button onClick={onThrowError}>Throw Error</Button>
-      </div>
-    );
-  }
+function SearchSection({
+  searchTerm,
+  onSearch,
+  onChange,
+  onThrowError,
+}: SearchSectionProps) {
+  return (
+    <div className='top-section'>
+      <SearchInput searchTerm={searchTerm} onChange={onChange} />
+      <Button onClick={onSearch}>Search</Button>
+      <Button onClick={onThrowError}>Throw Error</Button>
+    </div>
+  );
 }
 
 export default SearchSection;

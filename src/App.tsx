@@ -1,97 +1,85 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { getPeople, searchPeople, Result } from './api';
 import SearchSection from './components/SearchSection';
 import ResultsSection from './components/ResultsSection';
 import Loader from './components/Loader';
+import { useSearchQuery } from './hooks/searchQuery';
 
-interface AppState {
-  searchTerm: string;
-  results: Result[];
-  throwError: boolean;
-  isLoading: boolean;
-}
+function App() {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [results, setResults] = useState<Result[]>([]);
+  const [throwError, setThrowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useSearchQuery('searchQuery', '');
 
-class App extends React.Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-      results: [],
-      throwError: false,
-      isLoading: false,
-    };
-  }
+  const fetchResults = useCallback(async (query: string = '') => {
+    setIsLoading(true);
+    try {
+      const data = query ? await searchPeople(query.trim()) : await getPeople();
+      setResults(data.results);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  componentDidMount() {
-    const savedSearchTerm = localStorage.getItem('searchTerm');
-    if (savedSearchTerm) {
-      this.setState({ searchTerm: savedSearchTerm }, () => {
-        this.fetchResults(savedSearchTerm)
-          .then()
-          .catch((error) => {
-            console.error('Error in handleSearchClick:', error);
-          });
-      });
+  useEffect(() => {
+    setSearchTerm(searchQuery);
+    if (searchTerm) {
+      setSearchQuery(searchTerm);
+      fetchResults(searchTerm)
+        .then()
+        .catch((error) => {
+          console.error('Error in handleSearchClick:', error);
+        });
     } else {
-      this.fetchResults()
+      fetchResults()
         .then()
         .catch((error) => {
           console.error('Error in handleSearchClick:', error);
         });
     }
-  }
+  }, [searchTerm, searchQuery, fetchResults, setSearchQuery]);
 
-  fetchResults = async (query = ''): Promise<void> => {
-    this.setState({ isLoading: true });
-    try {
-      const data = query ? await searchPeople(query.trim()) : await getPeople();
-      this.setState({ results: data.results });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
-  handleSearch = () => {
-    this.fetchResults(this.state.searchTerm)
+  const handleSearch = useCallback(() => {
+    fetchResults(searchTerm)
       .then(() => {
-        localStorage.setItem('searchTerm', this.state.searchTerm);
+        setSearchQuery(searchTerm);
       })
       .catch((error) => {
         console.error('Error in handleSearchClick:', error);
       });
-  };
+  }, [fetchResults, searchTerm, setSearchQuery]);
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value });
-  };
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    },
+    [],
+  );
 
-  handleThrowError = () => {
-    this.setState({ throwError: true });
-  };
+  const handleThrowError = useCallback(() => {
+    setThrowError(true);
+  }, []);
 
-  render() {
-    if (this.state.throwError) {
-      throw new Error('Test Error');
-    }
-
-    const { searchTerm, results, isLoading } = this.state;
-
-    return (
-      <div className='app'>
-        <SearchSection
-          searchTerm={searchTerm}
-          onSearch={this.handleSearch}
-          onChange={this.handleChange}
-          onThrowError={this.handleThrowError}
-        />
-        <hr />
-        {isLoading ? <Loader /> : <ResultsSection results={results} />}
-      </div>
-    );
+  if (throwError) {
+    throw new Error('Test Error');
   }
+
+  return (
+    <div className='app'>
+      <SearchSection
+        searchTerm={searchTerm}
+        onSearch={handleSearch}
+        onChange={handleChange}
+        onThrowError={handleThrowError}
+      />
+      <hr />
+      {isLoading ? <Loader /> : <ResultsSection results={results} />}
+    </div>
+  );
 }
 
 export default App;
