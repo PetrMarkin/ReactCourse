@@ -1,21 +1,9 @@
-import { Result } from '../api';
+import { CardProps } from '../interfaces/interfaces';
 
-interface CardProps {
-  index: number;
-  item: Result;
-}
-
-function Card({ index, item }: CardProps) {
+function Card({ index, item, onClick }: CardProps) {
   return (
-    <div className='result-item' key={index}>
+    <div className='result-item' key={index} onClick={onClick}>
       <h3>{item.name}</h3>
-      <p>Height: {item.height}</p>
-      <p>Mass: {item.mass}</p>
-      <p>Hair Color: {item.hair_color}</p>
-      <p>Skin Color: {item.skin_color}</p>
-      <p>Eye Color: {item.eye_color}</p>
-      <p>Birth Year: {item.birth_year}</p>
-      <p>Gender: {item.gender}</p>
     </div>
   );
 }

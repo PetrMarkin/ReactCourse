@@ -1,9 +1,4 @@
-import React from 'react';
-
-interface InputProps {
-  searchTerm: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { InputProps } from '../../interfaces/interfaces';
 
 function SearchInput({ searchTerm, onChange }: InputProps) {
   return (

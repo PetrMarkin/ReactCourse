@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import { getPeople, searchPeople, Result } from './api';
+import { getPeople, searchPeople } from './helpers/api';
 import SearchSection from './components/SearchSection';
 import ResultsSection from './components/ResultsSection';
-import Loader from './components/Loader';
+import Loader from './components/UI/Loader';
 import { useSearchQuery } from './hooks/searchQuery';
+import { Result } from './interfaces/interfaces';
+import Pagination from './components/Pagination';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -12,36 +15,43 @@ function App() {
   const [throwError, setThrowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useSearchQuery('searchQuery', '');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPage = new URLSearchParams(location.search).get('page') || '1';
 
-  const fetchResults = useCallback(async (query: string = '') => {
-    setIsLoading(true);
-    try {
-      const data = query ? await searchPeople(query.trim()) : await getPeople();
-      setResults(data.results);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const fetchResults = useCallback(
+    async (query: string = '', page: string = '1') => {
+      setIsLoading(true);
+      try {
+        const data = query
+          ? await searchPeople(query.trim())
+          : await getPeople(page);
+        setResults(data.results);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
-    setSearchTerm(searchQuery);
-    if (searchTerm) {
-      setSearchQuery(searchTerm);
-      fetchResults(searchTerm)
+    if (searchQuery) {
+      setSearchTerm(searchQuery);
+      fetchResults(searchQuery, currentPage)
         .then()
         .catch((error) => {
           console.error('Error in handleSearchClick:', error);
         });
     } else {
-      fetchResults()
+      fetchResults('', currentPage)
         .then()
         .catch((error) => {
           console.error('Error in handleSearchClick:', error);
         });
     }
-  }, [searchTerm, searchQuery, fetchResults, setSearchQuery]);
+  }, [searchQuery, fetchResults, currentPage]);
 
   const handleSearch = useCallback(() => {
     fetchResults(searchTerm)
@@ -68,6 +78,11 @@ function App() {
     throw new Error('Test Error');
   }
 
+  function handleCardClick(item: Result): void {
+    const cardId = item.url.split('/').slice(-2, -1)[0];
+    navigate(`details/${cardId}/?page=${currentPage}`);
+  }
+
   return (
     <div className='app'>
       <SearchSection
@@ -77,7 +92,15 @@ function App() {
         onThrowError={handleThrowError}
       />
       <hr />
-      {isLoading ? <Loader /> : <ResultsSection results={results} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className='main-content'>
+          <ResultsSection results={results} onCardClick={handleCardClick} />
+          <Outlet />
+        </div>
+      )}
+      <Pagination />
     </div>
   );
 }

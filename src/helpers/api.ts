@@ -1,36 +1,12 @@
+import { ResponseData } from '../interfaces/interfaces';
+
 const API_URL = 'https://swapi.dev/api/people/';
 
-export interface Result {
-  name: string;
-  height: string;
-  mass: string;
-  hair_color: string;
-  skin_color: string;
-  eye_color: string;
-  birth_year: string;
-  gender: string;
-  homeworld: string;
-  films: Array<string>;
-  species: Array<string>;
-  vehicles: Array<string>;
-  starships: Array<string>;
-  created: string;
-  edited: string;
-  url: string;
-}
-
-interface ResponseData {
-  count: number;
-  next: string;
-  previous: null;
-  results: Array<Result>;
-}
-
-export async function getPeople(): Promise<ResponseData> {
+export async function getPeople(page: string = '1'): Promise<ResponseData> {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
 
-  const url = `${API_URL}`;
+  const url = `${API_URL}/?page=${page}`;
 
   const requestOptions = {
     method: 'GET',
@@ -65,3 +41,12 @@ export async function searchPeople(people: string): Promise<ResponseData> {
 
   return responseData;
 }
+
+export const getPersonById = async (id: string) => {
+  const response = await fetch(`https://swapi.dev/api/people/${id}/`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  const data: ResponseData = (await response.json()) as ResponseData;
+  return data;
+};

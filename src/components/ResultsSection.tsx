@@ -1,14 +1,12 @@
-import { Result } from '../api';
-import CardList from './CardList';
+import { ResultsSectionProps } from '../interfaces/interfaces';
+import Card from './Card';
 
-interface ResultsSectionProps {
-  results: Result[];
-}
-
-function ResultsSection({ results }: ResultsSectionProps) {
+function ResultsSection({ results, onCardClick }: ResultsSectionProps) {
   return (
-    <div className='bottom-section'>
-      <CardList results={results} />
+    <div className='results-section'>
+      {results.map((item, index) => (
+        <Card key={index} item={item} onClick={() => onCardClick(item)} />
+      ))}
     </div>
   );
 }

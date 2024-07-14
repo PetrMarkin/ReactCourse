@@ -1,11 +1,7 @@
-import { Result } from '../api';
+import { ResultsSectionProps } from '../interfaces/interfaces';
 import Card from './Card';
 
-interface CardListProps {
-  results: Result[];
-}
-
-function CardList({ results }: CardListProps) {
+function CardList({ results }: ResultsSectionProps) {
   if (!results) {
     return null;
   }

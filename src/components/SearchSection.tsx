@@ -1,13 +1,6 @@
-import React from 'react';
-import Button from './Button';
-import SearchInput from './SearchInput';
-
-interface SearchSectionProps {
-  searchTerm: string;
-  onSearch: () => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onThrowError: () => void;
-}
+import { SearchSectionProps } from '../interfaces/interfaces';
+import Button from './UI/Button';
+import SearchInput from './UI/SearchInput';
 
 function SearchSection({
   searchTerm,
