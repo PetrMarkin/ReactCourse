@@ -1,0 +1,237 @@
+{
+  "result": [
+    {
+      "scriptId": "1006",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/tests/setupAfterEnv.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 703, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 703, "count": 1 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1271",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/tests/SearchTest.test.tsx",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 8397, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 8397, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 1175, "endOffset": 3779, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 1218, "endOffset": 1262, "count": 2 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 1352, "endOffset": 2861, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "ComponentWrapper",
+          "ranges": [{ "startOffset": 1426, "endOffset": 2124, "count": 2 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "handleInputChange",
+          "ranges": [{ "startOffset": 1567, "endOffset": 1631, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "onSearch",
+          "ranges": [{ "startOffset": 1796, "endOffset": 1815, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "onThrowError",
+          "ranges": [{ "startOffset": 1880, "endOffset": 1899, "count": 0 }],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 2745, "endOffset": 2855, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 2937, "endOffset": 3775, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "Component",
+          "ranges": [{ "startOffset": 3064, "endOffset": 3416, "count": 1 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1388",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/components/SearchSection.tsx",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 3281, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 3281, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "SearchSection",
+          "ranges": [{ "startOffset": 564, "endOffset": 1731, "count": 2 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1389",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/components/UI/Button.tsx",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 1520, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 1520, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "Button",
+          "ranges": [{ "startOffset": 315, "endOffset": 609, "count": 4 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1390",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/components/UI/SearchInput.tsx",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 1761, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 1761, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "SearchInput",
+          "ranges": [{ "startOffset": 315, "endOffset": 725, "count": 2 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1391",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/tests/mock.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 4848, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 4848, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "get",
+          "ranges": [{ "startOffset": 1182, "endOffset": 1209, "count": 0 }],
+          "isBlockCoverage": false
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 1255, "endOffset": 1452, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "getItem",
+          "ranges": [
+            { "startOffset": 1296, "endOffset": 1347, "count": 3 },
+            { "startOffset": 1335, "endOffset": 1340, "count": 1 }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "setItem",
+          "ranges": [{ "startOffset": 1353, "endOffset": 1406, "count": 4 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "clear",
+          "ranges": [{ "startOffset": 1412, "endOffset": 1445, "count": 2 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "get",
+          "ranges": [{ "startOffset": 1561, "endOffset": 1593, "count": 1 }],
+          "isBlockCoverage": true
+        }
+      ]
+    },
+    {
+      "scriptId": "1392",
+      "url": "file:///B:/ProjectsReact/ReactCourse/src/hooks/useSearchQuery.ts",
+      "functions": [
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 0, "endOffset": 2123, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 13, "endOffset": 2123, "count": 1 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "useSearchQuery",
+          "ranges": [{ "startOffset": 342, "endOffset": 682, "count": 3 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [
+            { "startOffset": 433, "endOffset": 526, "count": 2 },
+            { "startOffset": 511, "endOffset": 521, "count": 1 }
+          ],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "",
+          "ranges": [{ "startOffset": 563, "endOffset": 618, "count": 3 }],
+          "isBlockCoverage": true
+        },
+        {
+          "functionName": "get",
+          "ranges": [{ "startOffset": 786, "endOffset": 816, "count": 3 }],
+          "isBlockCoverage": true
+        }
+      ]
+    }
+  ]
+}

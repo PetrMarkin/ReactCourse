@@ -18,6 +18,7 @@ function DetailedCard() {
     <div className='detailed-card' ref={ref}>
       <button
         className='btn-close'
+        data-testid='close'
         onClick={() => {
           setIsActive(false);
         }}

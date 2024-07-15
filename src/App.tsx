@@ -4,7 +4,7 @@ import { getPeople, searchPeople } from './helpers/api';
 import SearchSection from './components/SearchSection';
 import ResultsSection from './components/ResultsSection';
 import Loader from './components/UI/Loader';
-import { useSearchQuery } from './hooks/searchQuery';
+import { useSearchQuery } from './hooks/useSearchQuery';
 import { Result } from './interfaces/interfaces';
 import Pagination from './components/Pagination';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (searchQuery) {
+    if (searchQuery && typeof searchQuery === 'string') {
       setSearchTerm(searchQuery);
       fetchResults(searchQuery, currentPage)
         .then()
