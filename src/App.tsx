@@ -8,6 +8,8 @@ import { useSearchQuery } from './hooks/useSearchQuery';
 import { Result } from './interfaces/interfaces';
 import Pagination from './components/Pagination';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -84,24 +86,26 @@ function App() {
   }
 
   return (
-    <div className='app'>
-      <SearchSection
-        searchTerm={searchTerm}
-        onSearch={handleSearch}
-        onChange={handleChange}
-        onThrowError={handleThrowError}
-      />
-      <hr />
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className='main-content'>
-          <ResultsSection results={results} onCardClick={handleCardClick} />
-          <Outlet />
-        </div>
-      )}
-      <Pagination />
-    </div>
+    <Provider store={store}>
+      <div className='app'>
+        <SearchSection
+          searchTerm={searchTerm}
+          onSearch={handleSearch}
+          onChange={handleChange}
+          onThrowError={handleThrowError}
+        />
+        <hr />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className='main-content'>
+            <ResultsSection results={results} onCardClick={handleCardClick} />
+            <Outlet />
+          </div>
+        )}
+        <Pagination />
+      </div>
+    </Provider>
   );
 }
 
