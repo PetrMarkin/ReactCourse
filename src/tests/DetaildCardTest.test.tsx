@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import DetailedCard from '../components/DetailedCard';
+import DetailedCard from '../components/DetailedCard/DetailedCard';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { mockResults } from './mock';
 

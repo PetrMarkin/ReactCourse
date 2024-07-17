@@ -1,0 +1,6 @@
+.resultItem {
+  padding: 20px;
+  border: solid 1px #fff;
+  border-radius: 10px;
+  cursor: pointer;
+}

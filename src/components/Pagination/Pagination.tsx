@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import styles from './Pagination.module.css';
 
 function Pagination() {
   const location = useLocation();
@@ -13,7 +14,7 @@ function Pagination() {
         <Link
           key={i}
           to={`?page=${i}`}
-          className={`btn_page ${page === i ? 'active' : ''}`}
+          className={`${styles.btnPage} ${page === i ? styles.active : ''}`}
         >
           {i}
         </Link>,
@@ -23,14 +24,14 @@ function Pagination() {
   };
 
   return (
-    <div className='pagination'>
-      <Link to={`?page=${page > 1 ? page - 1 : 1}`} className='btn_page'>
+    <div className={styles.pagination}>
+      <Link to={`?page=${page > 1 ? page - 1 : 1}`} className={styles.btnPage}>
         Previous
       </Link>
       {renderPageLinks()}
       <Link
         to={`?page=${page < totalPages ? page + 1 : totalPages}`}
-        className='btn_page'
+        className={styles.btnPage}
       >
         Next
       </Link>

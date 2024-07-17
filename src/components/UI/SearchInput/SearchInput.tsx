@@ -1,4 +1,5 @@
-import { InputProps } from '../../interfaces/interfaces';
+import { InputProps } from '../../../interfaces/interfaces';
+import styles from './SearchInput.module.css';
 
 function SearchInput({ searchTerm, onChange }: InputProps) {
   return (
@@ -7,6 +8,7 @@ function SearchInput({ searchTerm, onChange }: InputProps) {
       value={searchTerm}
       onChange={onChange}
       placeholder='Search your character'
+      className={styles.searchInput}
     />
   );
 }

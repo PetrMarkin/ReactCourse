@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import './App.css';
 import { getPeople, searchPeople } from './helpers/api';
-import SearchSection from './components/SearchSection';
-import ResultsSection from './components/ResultsSection';
-import Loader from './components/UI/Loader';
+import SearchSection from './components/SearchSection/SearchSection';
+import ResultsSection from './components/ResultsSection/ResultsSection';
+import Loader from './components/UI/Loader/Loader';
 import { useSearchQuery } from './hooks/useSearchQuery';
 import { Result } from './interfaces/interfaces';
-import Pagination from './components/Pagination';
+import Pagination from './components/Pagination/Pagination';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import styles from './App.module.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -87,7 +87,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <div className='app'>
+      <div className={styles.app}>
         <SearchSection
           searchTerm={searchTerm}
           onSearch={handleSearch}
@@ -98,7 +98,7 @@ function App() {
         {isLoading ? (
           <Loader />
         ) : (
-          <div className='main-content'>
+          <div className={styles.mainContent}>
             <ResultsSection results={results} onCardClick={handleCardClick} />
             <Outlet />
           </div>

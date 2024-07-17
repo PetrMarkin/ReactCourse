@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { useRouteError } from 'react-router-dom';
-import ErrorPage from '../components/ErrorPage';
+import ErrorPage from '../components/ErrorPage/ErrorPage';
 
 vi.mock('react-router-dom', () => ({
   useRouteError: vi.fn(),

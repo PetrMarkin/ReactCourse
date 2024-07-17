@@ -1,0 +1,18 @@
+.detailedCard {
+  height: calc(100vh - 230px);
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #fff;
+  padding: 20px;
+  width: 35%;
+}
+
+.detailedCard p {
+  margin: 5px;
+}
+
+.resultItem {
+  padding: 20px;
+  border: solid 1px #fff;
+  border-radius: 10px;
+  cursor: pointer;
+}

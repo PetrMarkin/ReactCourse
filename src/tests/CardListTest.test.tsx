@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { test, expect } from 'vitest';
-import CardList from '../components/CardList';
+import CardList from '../components/CardList/CardList';
 import { mockResults } from './mock';
 
 test('renders correct number of cards', () => {

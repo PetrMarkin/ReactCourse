@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import useOutsideClick from '../hooks/useOutsideClick';
-import { Result } from '../interfaces/interfaces';
+import useOutsideClick from '../../hooks/useOutsideClick';
+import { Result } from '../../interfaces/interfaces';
+import styles from './DetailedCard.module.css';
+import Button from '../UI/Button/Button';
 
 function DetailedCard() {
   const item = useLoaderData() as Result;
@@ -15,17 +17,16 @@ function DetailedCard() {
   }, [isActive, navigate]);
 
   return (
-    <div className='detailed-card' ref={ref}>
-      <button
-        className='btn-close'
+    <div className={styles.detailedCard} ref={ref}>
+      <Button
         data-testid='close'
         onClick={() => {
           setIsActive(false);
         }}
       >
         Close
-      </button>
-      <div className='result-item'>
+      </Button>
+      <div className={styles.resultItem}>
         <h3>{item.name}</h3>
         <p>Height: {item.height}</p>
         <p>Mass: {item.mass}</p>

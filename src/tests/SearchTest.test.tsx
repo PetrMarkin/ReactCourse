@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from 'vitest';
-import SearchSection from '../components/SearchSection';
+import SearchSection from '../components/SearchSection/SearchSection';
 import { localStorageMock } from './mock';
 import { useSearchQuery } from '../hooks/useSearchQuery';
 

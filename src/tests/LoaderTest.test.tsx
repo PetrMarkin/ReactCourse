@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Loader from '../components/UI/Loader';
+import Loader from '../components/UI/Loader/Loader';
 
 describe('Loader component', () => {
   it('renders loader container', () => {

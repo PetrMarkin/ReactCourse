@@ -1,0 +1,10 @@
+.resultsSection {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: calc(100vh - 300px);
+  gap: 20px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  color: #fff;
+}

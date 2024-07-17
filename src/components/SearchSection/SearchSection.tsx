@@ -1,6 +1,7 @@
-import { SearchSectionProps } from '../interfaces/interfaces';
-import Button from './UI/Button';
-import SearchInput from './UI/SearchInput';
+import { SearchSectionProps } from '../../interfaces/interfaces';
+import Button from '../UI/Button/Button';
+import SearchInput from '../UI/SearchInput/SearchInput';
+import styles from './SearchSection.module.css';
 
 function SearchSection({
   searchTerm,
@@ -9,7 +10,7 @@ function SearchSection({
   onThrowError,
 }: SearchSectionProps) {
   return (
-    <div className='top-section'>
+    <div className={styles.searchSection}>
       <SearchInput searchTerm={searchTerm} onChange={onChange} />
       <Button onClick={onSearch}>Search</Button>
       <Button onClick={onThrowError}>Throw Error</Button>

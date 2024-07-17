@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Pagination from '../components/Pagination';
+import Pagination from '../components/Pagination/Pagination';
 
 describe('Pagination component', () => {
   it('renders without crashing', () => {
