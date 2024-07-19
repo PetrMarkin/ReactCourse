@@ -10,6 +10,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import styles from './App.module.css';
+import { useTheme } from './helpers/Contexts/ThemeConstants';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -20,6 +21,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPage = new URLSearchParams(location.search).get('page') || '1';
+  const { theme } = useTheme();
 
   const fetchResults = useCallback(
     async (query: string = '', page: string = '1') => {
@@ -87,7 +89,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <div className={styles.app}>
+      <div className={`${styles.app} ${theme}`}>
         <SearchSection
           searchTerm={searchTerm}
           onSearch={handleSearch}

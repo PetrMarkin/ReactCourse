@@ -1,9 +1,17 @@
 .detailedCard {
-  height: calc(100vh - 230px);
-  color: rgba(0, 0, 0, 0.8);
-  background-color: #fff;
+  height: calc(100vh - 300px);
   padding: 20px;
   width: 35%;
+}
+
+.detailedCard.light {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #333;
+}
+
+.detailedCard.dark {
+  color: #fff;
+  background-color: #fff;
 }
 
 .detailedCard p {
@@ -12,7 +20,15 @@
 
 .resultItem {
   padding: 20px;
-  border: solid 1px #fff;
   border-radius: 10px;
   cursor: pointer;
+  border: none;
+}
+
+.resultItem.light {
+  color: #fff;
+}
+
+.resultItem.dark {
+  color: #333;
 }

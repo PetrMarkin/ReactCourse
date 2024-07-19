@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface Result {
   name: string;
   height: string;
@@ -44,4 +46,13 @@ export interface InputProps {
 export interface SearchSectionProps extends InputProps {
   onSearch: () => void;
   onThrowError: () => void;
+}
+
+export interface ThemeContextType {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+export interface ThemeProviderProps {
+  children: ReactNode;
 }

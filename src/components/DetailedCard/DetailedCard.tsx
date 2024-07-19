@@ -4,11 +4,13 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import { Result } from '../../interfaces/interfaces';
 import styles from './DetailedCard.module.css';
 import Button from '../UI/Button/Button';
+import { useTheme } from '../../helpers/Contexts/ThemeConstants';
 
 function DetailedCard() {
   const item = useLoaderData() as Result;
   const navigate = useNavigate();
   const { ref, isActive, setIsActive } = useOutsideClick(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!isActive) {
@@ -17,7 +19,7 @@ function DetailedCard() {
   }, [isActive, navigate]);
 
   return (
-    <div className={styles.detailedCard} ref={ref}>
+    <div className={`${styles.detailedCard}  ${styles[theme]}`} ref={ref}>
       <Button
         data-testid='close'
         onClick={() => {
@@ -26,7 +28,7 @@ function DetailedCard() {
       >
         Close
       </Button>
-      <div className={styles.resultItem}>
+      <div className={`${styles.resultItem} ${styles[theme]}`}>
         <h3>{item.name}</h3>
         <p>Height: {item.height}</p>
         <p>Mass: {item.mass}</p>

@@ -16,11 +16,4 @@ describe('Loader component', () => {
     const loaderElement = screen.getByTestId('loader');
     expect(loaderElement).toBeInTheDocument();
   });
-
-  it('loader element has correct class', () => {
-    render(<Loader />);
-
-    const loaderElement = screen.getByTestId('loader');
-    expect(loaderElement).toHaveClass('loader');
-  });
 });

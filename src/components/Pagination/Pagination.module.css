@@ -1,18 +1,10 @@
 .btnPage {
   height: 40px;
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border: solid 1px #fff;
   cursor: pointer;
   padding: 5px 10px;
   text-decoration: none;
   margin-left: 8px;
-}
-
-.btnPage.active {
-  color: rgba(0, 0, 0, 0.8);
-  background-color: #fff;
 }
 
 .btnPage:hover {
@@ -21,4 +13,28 @@
 
 .pagination {
   height: 80px;
+}
+
+.btnPage.light {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.8);
+  border: solid 1px rgba(0, 0, 0, 0.8);
+}
+
+.btnPage.dark {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: solid 1px #fff;
+}
+
+.btnPage.dark.active {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #fff;
+  border: solid 1px rgba(0, 0, 0, 0.8);
+}
+
+.btnPage.light.active {
+  color: #fff;
+  background-color: #333;
+  border: solid 1px #333;
 }

@@ -1,6 +1,17 @@
 .resultItem {
   padding: 20px;
-  border: solid 1px #fff;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.resultItem.light {
+  border: solid 1px rgb(7, 6, 6);
+  color: rgb(7, 6, 6);
+  background-color: #fff;
+}
+
+.resultItem.dark {
+  border: solid 1px #fff;
+  color: #fff;
+  background-color: rgb(7, 6, 6);
 }
