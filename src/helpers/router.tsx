@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import ErrorPage from '../components/ErrorPage/ErrorPage';
 import App from '../App';
 import DetailedCard from '../components/DetailedCard/DetailedCard';
-import { CardLoader } from './CardLoader';
 
 const router = createBrowserRouter([
   {
@@ -11,9 +10,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/details/:cardId',
+        path: 'details/:id',
         element: <DetailedCard />,
-        loader: CardLoader,
       },
     ],
   },

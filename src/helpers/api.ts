@@ -1,6 +1,5 @@
 import { ResponseData } from '../interfaces/interfaces';
-
-const API_URL = 'https://swapi.dev/api/people/';
+import { API_URL } from './constants';
 
 export async function getPeople(page: string = '1'): Promise<ResponseData> {
   const headers = new Headers();

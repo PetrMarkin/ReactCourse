@@ -28,7 +28,6 @@ export interface CardProps {
 
 export interface ResultsSectionProps {
   results: Result[];
-  onCardClick: (item: Result) => void;
 }
 
 export interface ResponseData {
@@ -43,6 +42,11 @@ export interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export interface ButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
 export interface SearchSectionProps extends InputProps {
   onSearch: () => void;
   onThrowError: () => void;
@@ -55,4 +59,18 @@ export interface ThemeContextType {
 
 export interface ThemeProviderProps {
   children: ReactNode;
+}
+
+export interface SearchState {
+  searchTerm: string;
+  throwError: boolean;
+  searchResults: Result[];
+}
+
+export interface RootState {
+  search: SearchState;
+}
+
+export interface DetailedCardProps {
+  data: Result;
 }

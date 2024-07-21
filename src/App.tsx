@@ -1,113 +1,55 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { getPeople, searchPeople } from './helpers/api';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import styles from './App.module.css';
+import { useGetPeopleQuery } from './store/apiSlice';
 import SearchSection from './components/SearchSection/SearchSection';
 import ResultsSection from './components/ResultsSection/ResultsSection';
 import Loader from './components/UI/Loader/Loader';
-import { useSearchQuery } from './hooks/useSearchQuery';
-import { Result } from './interfaces/interfaces';
 import Pagination from './components/Pagination/Pagination';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
-import styles from './App.module.css';
+import { Outlet } from 'react-router-dom';
 import { useTheme } from './helpers/Contexts/ThemeConstants';
+import { RootState } from './interfaces/interfaces';
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [results, setResults] = useState<Result[]>([]);
-  const [throwError, setThrowError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useSearchQuery('searchQuery', '');
+  const [throwError] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const currentPage = new URLSearchParams(location.search).get('page') || '1';
   const { theme } = useTheme();
-
-  const fetchResults = useCallback(
-    async (query: string = '', page: string = '1') => {
-      setIsLoading(true);
-      try {
-        const data = query
-          ? await searchPeople(query.trim())
-          : await getPeople(page);
-        setResults(data.results);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [],
+  const searchTerm = useSelector((state: RootState) => state.search.searchTerm);
+  const searchResults = useSelector(
+    (state: RootState) => state.search.searchResults,
   );
+  const {
+    data: peopleData,
+    isLoading: peopleLoading,
+    isFetching,
+  } = useGetPeopleQuery(currentPage);
 
   useEffect(() => {
-    if (searchQuery && typeof searchQuery === 'string') {
-      setSearchTerm(searchQuery);
-      fetchResults(searchQuery, currentPage)
-        .then()
-        .catch((error) => {
-          console.error('Error in handleSearchClick:', error);
-        });
-    } else {
-      fetchResults('', currentPage)
-        .then()
-        .catch((error) => {
-          console.error('Error in handleSearchClick:', error);
-        });
+    if (throwError) {
+      throw new Error('Test Error');
     }
-  }, [searchQuery, fetchResults, currentPage]);
+  }, [throwError]);
 
-  const handleSearch = useCallback(() => {
-    fetchResults(searchTerm)
-      .then(() => {
-        setSearchQuery(searchTerm);
-      })
-      .catch((error) => {
-        console.error('Error in handleSearchClick:', error);
-      });
-  }, [fetchResults, searchTerm, setSearchQuery]);
+  const results = searchTerm ? searchResults : peopleData?.results;
 
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
-    },
-    [],
-  );
-
-  const handleThrowError = useCallback(() => {
-    setThrowError(true);
-  }, []);
-
-  if (throwError) {
-    throw new Error('Test Error');
-  }
-
-  function handleCardClick(item: Result): void {
-    const cardId = item.url.split('/').slice(-2, -1)[0];
-    navigate(`details/${cardId}/?page=${currentPage}`);
-  }
+  if (peopleLoading || isFetching) return <Loader />;
 
   return (
-    <Provider store={store}>
-      <div className={`${styles.app} ${theme}`}>
-        <SearchSection
-          searchTerm={searchTerm}
-          onSearch={handleSearch}
-          onChange={handleChange}
-          onThrowError={handleThrowError}
-        />
-        <hr />
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className={styles.mainContent}>
-            <ResultsSection results={results} onCardClick={handleCardClick} />
-            <Outlet />
-          </div>
-        )}
-        <Pagination />
-      </div>
-    </Provider>
+    <div className={`${styles.app} ${styles[theme]}`}>
+      <SearchSection />
+      <hr />
+      {results ? (
+        <div className={styles.mainContent}>
+          <ResultsSection results={results} />
+          <Outlet />
+        </div>
+      ) : (
+        <div>Error loading data</div>
+      )}
+      <Pagination />
+    </div>
   );
 }
 

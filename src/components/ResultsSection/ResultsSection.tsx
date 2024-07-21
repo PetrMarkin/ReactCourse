@@ -1,15 +1,14 @@
+import React from 'react';
 import { ResultsSectionProps } from '../../interfaces/interfaces';
-import Card from '../Card/Card';
 import styles from './ResultsSection.module.css';
+import CardList from '../CardList/CardList';
 
-function ResultsSection({ results, onCardClick }: ResultsSectionProps) {
+const ResultsSection: React.FC<ResultsSectionProps> = ({ results }) => {
   return (
     <div className={styles.resultsSection}>
-      {results.map((item, index) => (
-        <Card key={index} item={item} onClick={() => onCardClick(item)} />
-      ))}
+      <CardList onCardClick={() => {}} results={results}></CardList>
     </div>
   );
-}
+};
 
 export default ResultsSection;

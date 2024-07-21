@@ -1,11 +1,6 @@
-import React from 'react';
 import styles from './Button.module.css';
 import { useTheme } from '../../../helpers/Contexts/ThemeConstants';
-
-interface ButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-}
+import { ButtonProps } from '../../../interfaces/interfaces';
 
 function Button({ onClick, children }: ButtonProps) {
   const { theme } = useTheme();
