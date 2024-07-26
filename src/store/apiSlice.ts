@@ -17,9 +17,3 @@ export const apiSlice = createApi({
     }),
   }),
 });
-
-export const {
-  useGetPeopleQuery,
-  useLazySearchPeopleQuery,
-  useGetPersonByIdQuery,
-} = apiSlice;

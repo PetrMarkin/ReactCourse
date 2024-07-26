@@ -1,23 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const useOutsideClick = (initialValue: boolean) => {
-  const [isActive, setIsActive] = useState(initialValue);
+const useOutsideClick = (initialState: boolean) => {
+  const [isActive, setIsActive] = useState(initialState);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const handleClick = (e: MouseEvent) => {
-    if (ref.current && !ref.current.contains(e.target as Node)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
       setIsActive(false);
     }
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      document.addEventListener('click', handleClick);
-    }, 0);
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      clearTimeout(timer);
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 

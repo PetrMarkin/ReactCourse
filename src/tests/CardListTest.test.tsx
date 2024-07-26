@@ -1,29 +1,111 @@
-import { render } from '@testing-library/react';
-import { test, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, vi, beforeEach, Mock } from 'vitest';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { BrowserRouter as Router } from 'react-router-dom';
+import searchSlice from '../store/searchSlice';
 import CardList from '../components/CardList/CardList';
-import { mockResults } from './mock';
+import { apiSlice } from '../store/apiSlice';
+import { Result } from '../interfaces/interfaces';
+import { ThemeProvider } from '../helpers/Contexts/ThemeContext';
+import { useState } from 'react';
 
-test('renders correct number of cards', () => {
-  const { getAllByTestId } = render(
-    <CardList
-      results={mockResults}
-      onCardClick={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-    />,
-  );
-  const cardElements = getAllByTestId('result-item');
-  expect(cardElements.length).toBe(mockResults.length);
+vi.mock('../store/apiSlice', () => ({
+  apiSlice: {
+    endpoints: {
+      getPeople: {
+        useQuery: vi.fn(),
+      },
+    },
+  },
+}));
+
+vi.mock('react-redux', async () => {
+  const actual = await vi.importActual('react-redux');
+  return {
+    ...actual,
+    useSelector: vi.fn(),
+    useDispatch: vi.fn(),
+  };
 });
 
-test('renders nothing when no cards are present', () => {
-  const { container } = render(
-    <CardList
-      results={[]}
-      onCardClick={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-    />,
+vi.mock('../UI/Loader/Loader', () => ({
+  default: () => <div data-testid='loader-container'>Loading...</div>,
+}));
+
+const MockCardComponent = ({ item }: { item: Result }) => {
+  const [selectedItems] = useState<Result[]>([]);
+  const handleCheckboxChange = () => {
+    // handle state changes properly
+  };
+
+  return (
+    <div>
+      <input
+        type='checkbox'
+        checked={selectedItems.includes(item)}
+        onChange={handleCheckboxChange}
+      />
+      {item.name}
+    </div>
   );
-  expect(container.firstChild).toBeDefined();
+};
+
+vi.mock('../Card/Card', () => ({
+  default: MockCardComponent,
+}));
+
+const mockStore = (state = {}) =>
+  configureStore({
+    reducer: {
+      search: searchSlice.reducer,
+    },
+    preloadedState: state,
+  });
+
+const renderWithProviders = (ui: React.ReactElement, initialState = {}) => {
+  const store = mockStore(initialState);
+  return render(
+    <Provider store={store}>
+      <ThemeProvider>
+        <Router>{ui}</Router>
+      </ThemeProvider>
+    </Provider>,
+  );
+};
+
+describe('CardList Component', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders Loader component when data is loading', () => {
+    (
+      apiSlice.endpoints.getPeople.useQuery as unknown as Mock
+    ).mockImplementation(() => ({
+      data: null,
+      isLoading: true,
+      isFetching: false,
+      error: null,
+    }));
+
+    renderWithProviders(<CardList />);
+
+    expect(screen.getByTestId('loader-container')).toBeInTheDocument();
+  });
+
+  it('renders error message when there is an error fetching data', () => {
+    (
+      apiSlice.endpoints.getPeople.useQuery as unknown as Mock
+    ).mockImplementation(() => ({
+      data: null,
+      isLoading: false,
+      isFetching: false,
+      error: new Error('Fetch error'),
+    }));
+
+    renderWithProviders(<CardList />);
+
+    expect(screen.getByText('Error loading data')).toBeInTheDocument();
+  });
 });

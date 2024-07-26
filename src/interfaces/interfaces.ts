@@ -19,6 +19,14 @@ export interface Result {
   url: string;
 }
 
+export interface Props {
+  children: ReactNode;
+}
+
+export interface State {
+  hasError: boolean;
+}
+
 export interface CardProps {
   index?: number;
   item: Result;
@@ -69,8 +77,13 @@ export interface SearchState {
 
 export interface RootState {
   search: SearchState;
+  selectedItems: SelectedItemsState;
 }
 
 export interface DetailedCardProps {
   data: Result;
+}
+
+export interface SelectedItemsState {
+  selectedItems: Result[];
 }

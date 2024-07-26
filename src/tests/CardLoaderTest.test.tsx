@@ -1,22 +1,28 @@
 import { describe, it, expect, vi, Mock } from 'vitest';
 import { CardLoader } from '../helpers/CardLoader';
-import { getPersonById } from '../helpers/api';
+import { store } from '../store/store';
+import { mockResults } from './mock';
 
-vi.mock('../helpers/api');
+vi.mock('../store/store', () => ({
+  store: {
+    dispatch: vi.fn(),
+  },
+}));
 
 describe('CardLoader', () => {
   it('returns data when cardId is provided', async () => {
     const mockCardId = '1';
-    const mockData = { name: 'Luke Skywalker', height: '172', mass: '77' };
+    const mockData = mockResults[0];
 
-    (getPersonById as Mock).mockResolvedValue(mockData);
+    (store.dispatch as Mock).mockResolvedValue({
+      data: mockData,
+    });
 
     const params = { cardId: mockCardId };
-    const request = new Request('http://example.com');
+    const request = new Request('https://swapi.dev/api/');
     const result = await CardLoader({ params, request });
 
     expect(result).toEqual(mockData);
-    expect(getPersonById).toHaveBeenCalledWith(mockCardId.slice(-1));
   });
 
   it('throws an error when cardId is missing', async () => {
@@ -25,6 +31,21 @@ describe('CardLoader', () => {
 
     await expect(CardLoader({ params, request })).rejects.toThrow(
       'Card ID parameter is missing',
+    );
+  });
+
+  it('throws an error when fetch fails', async () => {
+    const mockCardId = '1';
+
+    (store.dispatch as Mock).mockImplementation(() => ({
+      error: { status: 500, data: 'Internal Server Error' },
+    }));
+
+    const params = { cardId: mockCardId };
+    const request = new Request('http://example.com');
+
+    await expect(CardLoader({ params, request })).rejects.toThrow(
+      'Failed to fetch data',
     );
   });
 });

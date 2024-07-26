@@ -5,13 +5,20 @@ import styles from './DetailedCard.module.css';
 import Button from '../UI/Button/Button';
 import { useTheme } from '../../helpers/Contexts/ThemeConstants';
 import Loader from '../UI/Loader/Loader';
-import { useGetPersonByIdQuery } from '../../store/apiSlice';
+import { apiSlice } from '../../store/apiSlice';
+
 function DetailedCard() {
   const navigate = useNavigate();
   const { ref, isActive, setIsActive } = useOutsideClick(true);
   const { theme } = useTheme();
   const { id } = useParams<{ id: string }>();
-  const { data, error, isLoading } = useGetPersonByIdQuery(id!);
+  const { data, error, isLoading } = apiSlice.endpoints.getPersonById.useQuery(
+    id!,
+  );
+
+  useEffect(() => {
+    setIsActive(true);
+  }, [id, setIsActive]);
 
   useEffect(() => {
     if (!isActive) {
