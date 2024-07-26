@@ -1,0 +1,20 @@
+.btnTheme {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.btnTheme.light {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.btnTheme.dark {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 1px solid #fff;
+}

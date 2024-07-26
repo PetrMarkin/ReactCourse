@@ -1,0 +1,9 @@
+.errorPage {
+  color: white;
+  font-size: 1.5rem;
+  margin-top: 100px;
+}
+
+.errorPage i {
+  font-size: 3rem;
+}
