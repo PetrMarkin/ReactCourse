@@ -76,6 +76,7 @@ export interface SearchState {
 }
 
 export interface RootState {
+  pagination: PaginationState;
   search: SearchState;
   selectedItems: SelectedItemsState;
 }
@@ -86,4 +87,8 @@ export interface DetailedCardProps {
 
 export interface SelectedItemsState {
   selectedItems: Result[];
+}
+
+export interface PaginationState {
+  currentPage: number;
 }

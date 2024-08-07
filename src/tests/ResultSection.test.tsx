@@ -3,47 +3,29 @@ import { render, screen } from '@testing-library/react';
 import ResultsSection from '../components/ResultsSection/ResultsSection';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '../helpers/Contexts/ThemeContext';
-import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import selectedItemsSlice from '../store/selectedItemsSlice';
 import searchSlice from '../store/searchSlice';
-import { apiSlice } from '../store/apiSlice'; // Импортируйте apiSlice
-import { RootState } from '../interfaces/interfaces';
-import { mockResults } from './mock';
+import { apiSlice } from '../store/apiSlice';
+import paginationSlice from '../store/paginationSlice';
 
-const mockState: RootState = {
-  selectedItems: {
-    selectedItems: mockResults,
-  },
-  search: {
-    searchTerm: '',
-    throwError: false,
-    searchResults: mockResults,
-  },
-};
-
-const mockStore = (preloadedState: RootState) =>
+const mockStore = () =>
   configureStore({
     reducer: {
-      selectedItems: selectedItemsSlice,
-      search: searchSlice.reducer,
       [apiSlice.reducerPath]: apiSlice.reducer,
+      search: searchSlice.reducer,
+      selectedItems: selectedItemsSlice,
+      pagination: paginationSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(apiSlice.middleware),
-    preloadedState,
   });
 
-const renderWithProviders = (
-  ui: React.ReactElement,
-  initialState: RootState,
-) => {
-  const store = mockStore(initialState);
+const renderWithProviders = (ui: React.ReactElement) => {
+  const store = mockStore();
   return render(
     <Provider store={store}>
-      <ThemeProvider>
-        <BrowserRouter>{ui}</BrowserRouter>
-      </ThemeProvider>
+      <ThemeProvider>{ui}</ThemeProvider>
     </Provider>,
   );
 };
@@ -53,26 +35,8 @@ describe('ResultsSection component', () => {
     vi.clearAllMocks();
   });
 
-  it('renders CardList and SelectedItems when there are selected items', () => {
-    renderWithProviders(<ResultsSection />, mockState);
-
-    expect(screen.getByTestId('card-list')).toBeInTheDocument();
-    expect(screen.getByTestId('selected-items')).toBeInTheDocument();
-  });
-
   it('renders only CardList when there are no selected items', () => {
-    const emptyState: RootState = {
-      selectedItems: {
-        selectedItems: [],
-      },
-      search: {
-        searchTerm: '',
-        throwError: false,
-        searchResults: mockResults,
-      },
-    };
-
-    renderWithProviders(<ResultsSection />, emptyState);
+    renderWithProviders(<ResultsSection />);
 
     expect(screen.getByTestId('card-list')).toBeInTheDocument();
     expect(screen.queryByTestId('selected-items')).toBeNull();

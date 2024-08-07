@@ -39,7 +39,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/**/*.{ts,tsx}'],
+      files: ['src/**/*.{ts,tsx}', 'pages/*'],
     },
   ],
 };

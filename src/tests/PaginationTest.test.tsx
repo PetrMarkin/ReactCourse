@@ -1,13 +1,26 @@
-import { render, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import Pagination from '../components/Pagination/Pagination';
 import { ThemeProvider } from '../helpers/Contexts/ThemeContext';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import paginationSlice from '../store/paginationSlice';
+
+const mockStore = () =>
+  configureStore({
+    reducer: {
+      pagination: paginationSlice,
+    },
+  });
 
 const renderWithProviders = (ui: React.ReactElement) => {
+  const store = mockStore();
   return render(
-    <ThemeProvider>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </ThemeProvider>,
+    <Provider store={store}>
+      <ThemeProvider>
+        <MemoryRouter>{ui}</MemoryRouter>{' '}
+      </ThemeProvider>
+    </Provider>,
   );
 };
 
@@ -16,14 +29,15 @@ describe('Pagination component', () => {
     renderWithProviders(<Pagination />);
   });
 
-  it('updates URL parameter "page" when clicking "Previous" link', () => {
-    const { getByText } = renderWithProviders(<Pagination />);
-    fireEvent.click(getByText('Previous'));
-  });
+  it('renders the correct number of page links', () => {
+    const { getAllByText } = renderWithProviders(<Pagination />);
 
-  it('updates URL parameter "page" when clicking "Next" link', () => {
-    const { getByText } = renderWithProviders(<Pagination />);
+    const pageLinks = getAllByText((content, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'span' && !isNaN(Number(content))
+      );
+    });
 
-    fireEvent.click(getByText('Next'));
+    expect(pageLinks).toHaveLength(9);
   });
 });

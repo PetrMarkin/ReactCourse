@@ -3,12 +3,12 @@ import { apiSlice } from '../../store/apiSlice';
 import Card from '../Card/Card';
 import styles from './CardList.module.css';
 import { RootState } from '../../interfaces/interfaces';
-import { useLocation } from 'react-router-dom';
 import Loader from '../UI/Loader/Loader';
 
 function CardList() {
-  const location = useLocation();
-  const currentPage = new URLSearchParams(location.search).get('page') || '1';
+  const currentPage = useSelector(
+    (state: RootState) => state.pagination.currentPage,
+  ).toString();
   const searchTerm = useSelector((state: RootState) => state.search.searchTerm);
   const {
     data: peopleData,

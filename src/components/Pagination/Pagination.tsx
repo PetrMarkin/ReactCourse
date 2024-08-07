@@ -1,24 +1,33 @@
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
 import styles from './Pagination.module.css';
 import { useTheme } from '../../helpers/Contexts/ThemeConstants';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPage } from '../../store/paginationSlice';
+import { RootState } from '../../store/store';
 
 function Pagination() {
-  const location = useLocation();
+  const dispatch = useDispatch();
   const totalPages = 9;
-  const currentPage = new URLSearchParams(location.search).get('page');
-  const page = currentPage ? parseInt(currentPage) : 1;
+  const currentPage = useSelector(
+    (state: RootState) => state.pagination.currentPage,
+  );
   const { theme } = useTheme();
+
+  const handlePageChange = (page: number) => {
+    dispatch(setPage(page));
+  };
 
   const renderPageLinks = () => {
     const pageLinks = [];
     for (let i = 1; i <= totalPages; i++) {
       pageLinks.push(
-        <Link
-          key={i}
-          to={`?page=${i}`}
-          className={`${styles.btnPage} ${styles[theme]} ${page === i ? styles.active : ''}`}
-        >
-          {i}
+        <Link key={i} href={`?page=${i}`}>
+          <span
+            onClick={() => handlePageChange(i)}
+            className={`${styles.btnPage} ${styles[theme]} ${currentPage === i ? styles.active : ''}`}
+          >
+            {i}
+          </span>
         </Link>,
       );
     }
@@ -27,18 +36,30 @@ function Pagination() {
 
   return (
     <div className={styles.pagination}>
-      <Link
-        to={`?page=${page > 1 ? page - 1 : 1}`}
-        className={`${styles.btnPage} ${styles[theme]}`}
-      >
-        Previous
+      <Link href={`?page=${currentPage > 1 ? currentPage - 1 : 1}`}>
+        <span
+          onClick={() =>
+            handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
+          }
+          className={`${styles.btnPage} ${styles[theme]}`}
+        >
+          Previous
+        </span>
       </Link>
       {renderPageLinks()}
       <Link
-        to={`?page=${page < totalPages ? page + 1 : totalPages}`}
-        className={`${styles.btnPage} ${styles[theme]}`}
+        href={`?page=${currentPage < totalPages ? currentPage + 1 : totalPages}`}
       >
-        Next
+        <span
+          onClick={() =>
+            handlePageChange(
+              currentPage < totalPages ? currentPage + 1 : totalPages,
+            )
+          }
+          className={`${styles.btnPage} ${styles[theme]}`}
+        >
+          Next
+        </span>
       </Link>
     </div>
   );
