@@ -9,7 +9,6 @@ import { mockResults } from './mock';
 import mockRouter from 'next-router-mock';
 
 const mockItem = mockResults[0];
-const initialError = null;
 const onClose = vi.fn();
 
 vi.mock('next/router', () => ({
@@ -51,11 +50,7 @@ describe('DetailedCard component', () => {
 
   it('renders detailed card with correct data', async () => {
     renderWithProviders(
-      <DetailedCard
-        initialData={mockItem}
-        initialError={initialError}
-        onClose={onClose}
-      />,
+      <DetailedCard initialData={mockItem} onClose={onClose} />,
     );
 
     await waitFor(() => {

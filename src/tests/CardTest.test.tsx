@@ -49,8 +49,6 @@ describe('Card component', () => {
   it('Card is rendered with the correct value', () => {
     renderWithProviders(<Card item={mockItem} />);
 
-    screen.debug();
-
     expect(
       screen.getByText(new RegExp(mockItem.name, 'i')),
     ).toBeInTheDocument();

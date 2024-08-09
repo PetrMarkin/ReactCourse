@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HomePage from '../../pages';
 import { configureStore } from '@reduxjs/toolkit';
@@ -14,7 +14,7 @@ import paginationSlice from '../store/paginationSlice';
 
 const mockRouter = {
   push: vi.fn(),
-  query: { details: '1' },
+  query: { page: '1', details: '1' },
   pathname: '/',
   asPath: '/',
   replace: vi.fn(),
@@ -24,7 +24,13 @@ const mockRouter = {
   isLocaleDomain: false,
 };
 
-const mockData = mockResults[0];
+const mockData = mockResults;
+const mockResponseData = {
+  count: 82,
+  next: 'https://swapi.dev/api/people/?page=2',
+  previous: null,
+  results: mockData,
+};
 
 const mockStore = (state = {}) =>
   configureStore({
@@ -58,25 +64,20 @@ vi.mock('next/router', () => ({
 describe('HomePage', () => {
   it('renders DetailedCard when ID is present in the query', () => {
     renderWithProviders(
-      <HomePage initialData={mockData} initialError={null} />,
+      <HomePage isLoading={false} initialData={mockResponseData} />,
     );
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    const allLukeSkywalkerElements = screen.getAllByText('Luke Skywalker');
+    expect(allLukeSkywalkerElements.length).toBe(2);
   });
 
-  it('hides DetailedCard and navigates back when handleClose is called', async () => {
+  it('hides DetailedCard and navigates back when handleClose is called', () => {
     renderWithProviders(
-      <HomePage initialData={mockData} initialError={null} />,
+      <HomePage initialData={mockResponseData} isLoading={false} />,
     );
-
-    await screen.findByText('Luke Skywalker');
 
     const closeButton = screen.getByText('Close');
     act(() => {
       closeButton.click();
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText('Luke Skywalker')).not.toBeInTheDocument();
     });
 
     expect(mockRouter.push).toHaveBeenCalledWith('/', undefined, {

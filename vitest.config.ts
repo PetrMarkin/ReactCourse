@@ -5,9 +5,19 @@ export default defineConfig({
   plugins: [react()],
   test: {
     include: ['**/*.test.tsx'],
-    exclude: ['**/next.config.js', 'node_modules'],
+    exclude: ['node_modules'],
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/tests/setupAfterEnv.ts',
+    coverage: {
+      provider: 'v8',
+      include: ['**/*.tsx', '**/*.ts'],
+      exclude: [
+        'node_modules/',
+        'next.config.js',
+        'vitest.config.ts',
+        '**/*.test.tsx',
+      ],
+    },
   },
 });

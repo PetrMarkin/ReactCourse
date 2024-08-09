@@ -6,9 +6,6 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   endpoints: (builder) => ({
-    getPeople: builder.query<ResponseData, string>({
-      query: (page = '1') => `people/?page=${page}`,
-    }),
     searchPeople: builder.query<ResponseData, string>({
       query: (people) => `people/?search=${people}`,
     }),

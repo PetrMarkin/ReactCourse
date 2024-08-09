@@ -5,27 +5,22 @@ import styles from './DetailedCard.module.css';
 import Button from '../UI/Button/Button';
 import Loader from '../UI/Loader/Loader';
 import { apiSlice } from '../../store/apiSlice';
-import { Result } from '../../interfaces/interfaces';
 import { useEffect } from 'react';
+import { Result } from '../../interfaces/interfaces';
 
 interface DetailedCardProps {
   initialData: Result;
-  initialError: string | null;
   onClose: () => void;
 }
 
-function DetailedCard({
-  initialData,
-  initialError,
-  onClose,
-}: DetailedCardProps) {
+function DetailedCard({ initialData, onClose }: DetailedCardProps) {
   const router = useRouter();
-  const id = router.query.details as string;
+  const id = router.query.details;
   const { ref, isActive } = useOutsideClick(true);
   const { theme } = useTheme();
 
   const { data: clientData, isLoading } =
-    apiSlice.endpoints.getPersonById.useQuery(id, {
+    apiSlice.endpoints.getPersonById.useQuery(id as string, {
       skip: !!initialData,
     });
 
@@ -35,26 +30,43 @@ function DetailedCard({
     }
   }, [isActive, onClose]);
 
-  if (isLoading) return <Loader />;
-  if (initialError) return <div>Error: {initialError}</div>;
-  if (!initialData && !clientData) return <div>No data available</div>;
+  if (initialData) {
+    return (
+      <div className={`${styles.detailedCard} ${styles[theme]}`} ref={ref}>
+        <Button data-testid='close' onClick={onClose}>
+          Close
+        </Button>
+        <div className={`${styles.resultItem} ${styles[theme]}`}>
+          <h3>{initialData.name}</h3>
+          <p>Height: {initialData.height}</p>
+          <p>Mass: {initialData.mass}</p>
+          <p>Hair Color: {initialData.hair_color}</p>
+          <p>Skin Color: {initialData.skin_color}</p>
+          <p>Eye Color: {initialData.eye_color}</p>
+          <p>Birth Year: {initialData.birth_year}</p>
+          <p>Gender: {initialData.gender}</p>
+        </div>
+      </div>
+    );
+  }
 
-  const dataToDisplay = initialData || clientData;
+  if (isLoading) return <Loader />;
+  if (!clientData) return <div>No data available</div>;
 
   return (
     <div className={`${styles.detailedCard} ${styles[theme]}`} ref={ref}>
-      <Button data-testid='close' onClick={() => onClose()}>
+      <Button data-testid='close' onClick={onClose}>
         Close
       </Button>
       <div className={`${styles.resultItem} ${styles[theme]}`}>
-        <h3>{dataToDisplay.name}</h3>
-        <p>Height: {dataToDisplay.height}</p>
-        <p>Mass: {dataToDisplay.mass}</p>
-        <p>Hair Color: {dataToDisplay.hair_color}</p>
-        <p>Skin Color: {dataToDisplay.skin_color}</p>
-        <p>Eye Color: {dataToDisplay.eye_color}</p>
-        <p>Birth Year: {dataToDisplay.birth_year}</p>
-        <p>Gender: {dataToDisplay.gender}</p>
+        <h3>{clientData.name}</h3>
+        <p>Height: {clientData.height}</p>
+        <p>Mass: {clientData.mass}</p>
+        <p>Hair Color: {clientData.hair_color}</p>
+        <p>Skin Color: {clientData.skin_color}</p>
+        <p>Eye Color: {clientData.eye_color}</p>
+        <p>Birth Year: {clientData.birth_year}</p>
+        <p>Gender: {clientData.gender}</p>
       </div>
     </div>
   );

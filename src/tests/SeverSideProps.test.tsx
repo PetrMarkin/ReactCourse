@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, Mock } from 'vitest';
-import { getServerSideProps } from '../helpers/serverSideProps';
+import { getServerSideProps } from '../../pages';
+import { GetServerSidePropsContext } from 'next';
 
 global.fetch = vi.fn();
 
@@ -13,13 +14,15 @@ describe('getServerSideProps', () => {
       ok: false,
     } as Response);
 
-    const context = { query: { details: '1' } };
-    const result = await getServerSideProps(context);
+    const context = { query: { details: '1', page: '1' } };
+    const result = await getServerSideProps(
+      context as unknown as GetServerSidePropsContext,
+    );
 
     expect(result).toEqual({
       props: {
         initialData: null,
-        initialError: null,
+        isLoading: false,
       },
     });
   });
@@ -29,13 +32,15 @@ describe('getServerSideProps', () => {
       new Error('Failed to fetch'),
     );
 
-    const context = { query: { details: '1' } };
-    const result = await getServerSideProps(context);
+    const context = { query: { details: '1', page: '1' } };
+    const result = await getServerSideProps(
+      context as unknown as GetServerSidePropsContext,
+    );
 
     expect(result).toEqual({
       props: {
         initialData: null,
-        initialError: null,
+        isLoading: false,
       },
     });
   });

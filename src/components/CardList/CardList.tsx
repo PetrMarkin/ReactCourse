@@ -1,36 +1,22 @@
-import { useSelector } from 'react-redux';
-import { apiSlice } from '../../store/apiSlice';
 import Card from '../Card/Card';
 import styles from './CardList.module.css';
-import { RootState } from '../../interfaces/interfaces';
 import Loader from '../UI/Loader/Loader';
+import { Result } from '../../interfaces/interfaces';
 
-function CardList() {
-  const currentPage = useSelector(
-    (state: RootState) => state.pagination.currentPage,
-  ).toString();
-  const searchTerm = useSelector((state: RootState) => state.search.searchTerm);
-  const {
-    data: peopleData,
-    isLoading: peopleLoading,
-    isFetching,
-    error,
-  } = apiSlice.endpoints.getPeople.useQuery(currentPage);
-  const searchResults = useSelector(
-    (state: RootState) => state.search.searchResults,
-  );
+interface CardListProps {
+  initialData: {
+    results: Result[];
+  } | null;
+  isLoading: boolean;
+}
 
-  const results = searchTerm ? searchResults : peopleData?.results;
+function CardList({ initialData, isLoading }: CardListProps) {
+  const results = initialData?.results;
 
-  if (error) {
-    console.error('Error fetching people data:', error);
-    return <div>Error loading data</div>;
-  }
-
-  if (peopleLoading || isFetching) {
+  if (isLoading) {
     return <Loader />;
   }
-  if (!results) {
+  if (!results || results.length === 0) {
     return <div>No results found</div>;
   }
 
