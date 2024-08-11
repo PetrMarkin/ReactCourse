@@ -1,0 +1,21 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.app.dark {
+  background-color: rgb(7, 6, 6);
+}
+
+.app.light {
+  background-color: #fff;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  flex: 2;
+  margin: auto;
+}

@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+}
+
+h1 {
+  color: #fff;
+}
+
+hr {
+  width: calc(100% - 40px);
+  color: black;
+}
+
+.error {
+  color: red;
+}
+
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
