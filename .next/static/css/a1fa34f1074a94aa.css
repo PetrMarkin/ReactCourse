@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+.main-container {
+  display: flex;
+  flex-direction: row;
+}
+h1 {
+  color: #fff;
+}
+hr {
+  width: calc(100% - 40px);
+  color: #000;
+}
+.error {
+  color: red;
+}
+.light {
+  background-color: #fff;
+  color: #000;
+}
+.dark {
+  background-color: #000;
+  color: #fff;
+}

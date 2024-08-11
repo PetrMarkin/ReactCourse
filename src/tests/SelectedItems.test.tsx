@@ -1,102 +1,56 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { useSelector, useDispatch } from 'react-redux';
-import { vi, describe, it, expect, beforeEach, MockedFunction } from 'vitest';
-import { clearSelectedItems } from '../store/selectedItemsSlice';
+import { Mock, vi } from 'vitest';
+import SelectedItems from '../components/SelectedItems/SelectedItems';
+import { useSelectedItems } from '../helpers/Contexts/SelectedItemsContext';
 import { useTheme } from '../helpers/Contexts/ThemeConstants';
-import ItemList from '../components/SelectedItems/SelectedItems';
 
-vi.mock('react-redux', async (importOriginal) => {
-  const actual: typeof import('react-redux') = await importOriginal();
-
-  return {
-    ...actual,
-    useSelector: vi.fn(),
-    useDispatch: vi.fn(),
-    Provider: actual.Provider,
-  };
-});
+vi.mock('../helpers/Contexts/SelectedItemsContext', () => ({
+  useSelectedItems: vi.fn(),
+}));
 
 vi.mock('../helpers/Contexts/ThemeConstants', () => ({
   useTheme: vi.fn(),
 }));
 
-vi.mock('../store/selectedItemsSlice', () => ({
-  clearSelectedItems: vi.fn(),
-  default: () => ({}),
-}));
-
-describe('ItemList component', () => {
-  const mockDispatch = vi.fn();
-  const mockUseTheme = useTheme as MockedFunction<typeof useTheme>;
-  const mockUseSelector = useSelector as MockedFunction<typeof useSelector>;
+describe('SelectedItems component', () => {
+  const mockDeselectItem = vi.fn();
+  const mockSelectedItems = [
+    {
+      name: 'Luke Skywalker',
+      height: '172',
+      mass: '77',
+      homeworld: 'Tatooine',
+      films: ['A New Hope', 'The Empire Strikes Back'],
+      species: ['Human'],
+      created: '2014-12-09T13:50:51.644000Z',
+      edited: '2014-12-20T21:17:56.891000Z',
+      url: 'https://swapi.dev/api/people/1/',
+    },
+  ];
 
   beforeEach(() => {
-    mockDispatch.mockClear();
-    mockUseTheme.mockReturnValue({
-      theme: 'light',
-      toggleTheme: function (): void {
-        throw new Error('Function not implemented.');
-      },
+    (useSelectedItems as Mock).mockReturnValue({
+      selectedItems: mockSelectedItems,
+      deselectItem: mockDeselectItem,
     });
-    mockUseSelector.mockReturnValue([]);
-    (useDispatch as MockedFunction<typeof useDispatch>).mockReturnValue(
-      mockDispatch,
-    );
+    (useTheme as Mock).mockReturnValue({ theme: 'light' });
   });
 
-  const renderWithProviders = (ui: React.ReactElement) => {
-    const store = configureStore({
-      reducer: {
-        selectedItems: () => ({}),
-      },
-    });
+  it('should render selected items and buttons correctly', () => {
+    render(<SelectedItems />);
 
-    return render(<Provider store={store}>{ui}</Provider>);
-  };
-
-  it('should render correctly with the current theme', () => {
-    renderWithProviders(<ItemList />);
-
-    expect(screen.getByText('Selected Items:')).toHaveClass('light');
+    expect(screen.getByText('Selected Items:')).toBeInTheDocument();
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    expect(screen.getByText('Unselect all')).toBeInTheDocument();
+    expect(screen.getByText('Download')).toBeInTheDocument();
   });
 
-  it('should handle "Unselect all" button click', () => {
-    mockUseSelector.mockReturnValue([
-      { name: 'Luke Skywalker', url: 'mock-url' },
-    ]);
-
-    renderWithProviders(<ItemList />);
+  it('should call deselectItem for each selected item when "Unselect all" is clicked', () => {
+    render(<SelectedItems />);
 
     fireEvent.click(screen.getByText('Unselect all'));
 
-    expect(mockDispatch).toHaveBeenCalledWith(clearSelectedItems());
-  });
-
-  it('should handle "Download" button click when there are selected items', () => {
-    renderWithProviders(<ItemList />);
-
-    const downloadButton = screen.getByRole('button', { name: /Download/i });
-
-    expect(downloadButton).toBeInTheDocument();
-
-    const clickSpy = vi.spyOn(downloadButton, 'click');
-
-    downloadButton.click();
-
-    expect(clickSpy).toHaveBeenCalled();
-  });
-
-  it('should display alert when "Download" button is clicked and no items are selected', () => {
-    mockUseSelector.mockReturnValue([]);
-
-    renderWithProviders(<ItemList />);
-
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-
-    fireEvent.click(screen.getByText('Download'));
-
-    expect(alertSpy).toHaveBeenCalledWith('No items selected');
+    expect(mockDeselectItem).toHaveBeenCalledTimes(mockSelectedItems.length);
+    expect(mockDeselectItem).toHaveBeenCalledWith(mockSelectedItems[0].url);
   });
 });

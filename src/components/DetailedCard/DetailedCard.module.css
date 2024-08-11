@@ -1,4 +1,5 @@
 .detailedCard {
+  margin: auto;
   height: calc(100vh - 500px);
   padding: 20px;
   width: 35%;
@@ -25,10 +26,10 @@
   border: none;
 }
 
-.resultItem.light {
+.resultItem.dark {
   color: #fff;
 }
 
-.resultItem.dark {
+.resultItem.light {
   color: #333;
 }

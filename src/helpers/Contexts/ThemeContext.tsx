@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { ThemeProviderProps } from '../../interfaces/interfaces';
 import { ThemeContext } from './ThemeConstants';

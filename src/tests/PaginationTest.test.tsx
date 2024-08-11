@@ -1,36 +1,31 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import Pagination from '../components/Pagination/Pagination';
 import { ThemeProvider } from '../helpers/Contexts/ThemeContext';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import paginationSlice from '../store/paginationSlice';
+import { SelectedItemsProvider } from '../helpers/Contexts/SelectedItemsContext';
 
-const mockStore = () =>
-  configureStore({
-    reducer: {
-      pagination: paginationSlice,
-    },
-  });
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    query: { page: '1' },
+  }),
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 const renderWithProviders = (ui: React.ReactElement) => {
-  const store = mockStore();
   return render(
-    <Provider store={store}>
-      <ThemeProvider>
-        <MemoryRouter>{ui}</MemoryRouter>{' '}
-      </ThemeProvider>
-    </Provider>,
+    <SelectedItemsProvider>
+      <ThemeProvider>{ui}</ThemeProvider>
+    </SelectedItemsProvider>,
   );
 };
 
 describe('Pagination component', () => {
   it('renders without crashing', () => {
-    renderWithProviders(<Pagination />);
+    renderWithProviders(<Pagination totalPages={9} />);
   });
 
   it('renders the correct number of page links', () => {
-    const { getAllByText } = renderWithProviders(<Pagination />);
+    const { getAllByText } = renderWithProviders(<Pagination totalPages={9} />);
 
     const pageLinks = getAllByText((content, element) => {
       return (

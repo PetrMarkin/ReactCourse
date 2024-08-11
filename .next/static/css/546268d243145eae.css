@@ -1,0 +1,70 @@
+.Card_resultItem__qYS99 {
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.Card_resultItem__qYS99.Card_light__Fkbbg {
+  border: 1px solid #070606;
+  color: #070606;
+  background-color: #fff;
+}
+.Card_resultItem__qYS99.Card_dark___aMFt {
+  border: 1px solid #fff;
+  color: #fff;
+  background-color: #070606;
+}
+.Card_selectedCheckbox__pXf_x {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+}
+.Card_light__Fkbbg .Card_selectedCheckbox__pXf_x {
+  border: 2px solid #000;
+}
+.Card_dark___aMFt .Card_selectedCheckbox__pXf_x {
+  border: 2px solid #fff;
+}
+.Card_selectedCheckbox__pXf_x:checked {
+  content: '';
+  display: inline-block;
+}
+.Card_light__Fkbbg .Card_selectedCheckbox__pXf_x:checked {
+  background-color: #070606;
+  border-color: #070606;
+}
+.Card_light__Fkbbg .Card_selectedCheckbox__pXf_x:checked:after {
+  content: '✓';
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 4px;
+  font-size: 14px;
+}
+.Card_dark___aMFt .Card_selectedCheckbox__pXf_x:checked {
+  background-color: #fff;
+  border-color: #fff;
+}
+.Card_dark___aMFt .Card_selectedCheckbox__pXf_x:checked:after {
+  content: '✓';
+  color: #000;
+  position: absolute;
+  top: 0;
+  left: 4px;
+  font-size: 14px;
+}
+.CardList_results__c8AbG {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: calc(100vh - 500px);
+  grid-gap: 20px;
+  gap: 20px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  color: #fff;
+}

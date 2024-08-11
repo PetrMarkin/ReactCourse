@@ -2,38 +2,24 @@ import { render, screen } from '@testing-library/react';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import Card from '../components/Card/Card';
 import { mockResults } from './mock';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
 import { ThemeProvider } from '../helpers/Contexts/ThemeContext';
-import { apiSlice } from '../store/apiSlice';
-import selectedItemsReducer from '../store/selectedItemsSlice';
+import { SelectedItemsProvider } from '../helpers/Contexts/SelectedItemsContext';
 
-vi.mock('next/router', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: vi.fn(),
     query: { page: '1' },
   }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const mockItem = mockResults[0];
 
-const mockStore = (state = {}) =>
-  configureStore({
-    reducer: {
-      [apiSlice.reducerPath]: apiSlice.reducer,
-      selectedItems: selectedItemsReducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(apiSlice.middleware),
-    preloadedState: state,
-  });
-
-const renderWithProviders = (ui: React.ReactElement, initialState = {}) => {
-  const store = mockStore(initialState);
+const renderWithProviders = (ui: React.ReactElement) => {
   return render(
-    <Provider store={store}>
+    <SelectedItemsProvider>
       <ThemeProvider>{ui}</ThemeProvider>
-    </Provider>,
+    </SelectedItemsProvider>,
   );
 };
 

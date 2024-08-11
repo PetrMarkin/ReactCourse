@@ -11,9 +11,9 @@
     "types": ["@testing-library/jest-dom"],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*", "pages/*"]
+      "@/*": ["src/*", "app/*"]
     }
   },
-  "include": ["vite.config.ts", "pages/*", "next-env.d.ts"],
+  "include": ["vite.config.ts", "app/*", "next-env.d.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,1 +1,2 @@
-self.__REACT_LOADABLE_MANIFEST = '{}';
+self.__REACT_LOADABLE_MANIFEST =
+  '{"src\\\\components\\\\ClientLayout\\\\ClientLayout.tsx -> ../CardList/CardList":{"id":111,"files":["static/css/546268d243145eae.css","static/chunks/111.e952c0eb23b355ac.js"]}}';

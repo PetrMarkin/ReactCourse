@@ -11,7 +11,11 @@
     "noEmit": true,
     "jsx": "preserve",
     "types": ["vitest/globals", "@testing-library/jest-dom"],
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "strict": false,
     "incremental": true,
     "resolveJsonModule": true,
@@ -19,12 +23,13 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "pages/*",
+    "app/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/**/*.ts",
-    "**/**/*.tsx"
+    "**/**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './Button.module.css';
 import { useTheme } from '../../../helpers/Contexts/ThemeConstants';
 import { ButtonProps } from '../../../interfaces/interfaces';

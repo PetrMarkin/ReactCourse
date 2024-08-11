@@ -1,17 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+'use client';
+
+import { useRef } from 'react';
 import styles from './SelectedItems.module.css';
 import { useTheme } from '../../helpers/Contexts/ThemeConstants';
 import Button from '../UI/Button/Button';
-import { clearSelectedItems } from '../../store/selectedItemsSlice';
-import { useRef } from 'react';
+import { useSelectedItems } from '../../helpers/Contexts/SelectedItemsContext';
 
-function ItemList() {
+function SelectedItems() {
+  const { selectedItems, deselectItem } = useSelectedItems();
   const { theme } = useTheme();
-  const selectedItems = useSelector(
-    (state: RootState) => state.selectedItems.selectedItems,
-  );
-  const dispatch = useDispatch();
   const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
   const downloadItems = () => {
@@ -25,20 +22,32 @@ function ItemList() {
       height: item.height,
       mass: item.mass,
       homeworld: item.homeworld,
-      films: item.films,
-      species: item.species,
+      films: item.films.join(', '),
+      species: item.species.join(', '),
       created: item.created,
       edited: item.edited,
       url: item.url,
     }));
 
     const csvContent = [
-      ['Name', 'Height', 'Mass', 'Homeworld', 'Created', 'Edited', 'Url'],
+      [
+        'Name',
+        'Height',
+        'Mass',
+        'Homeworld',
+        'Films',
+        'Species',
+        'Created',
+        'Edited',
+        'Url',
+      ],
       ...dataToDownload.map((item) => [
         item.name,
         item.height,
         item.mass,
         item.homeworld,
+        item.films,
+        item.species,
         item.created,
         item.edited,
         item.url,
@@ -59,7 +68,7 @@ function ItemList() {
   };
 
   const unselectAll = () => {
-    dispatch(clearSelectedItems());
+    selectedItems.forEach((item) => deselectItem(item.url));
   };
 
   return (
@@ -78,10 +87,10 @@ function ItemList() {
       <div className={`${styles.btnsContainer} ${theme}`}>
         <Button onClick={unselectAll}>Unselect all</Button>
         <Button onClick={downloadItems}>Download</Button>
-        <a ref={downloadLinkRef}></a>
+        <a role='link' ref={downloadLinkRef} style={{ display: 'none' }}></a>
       </div>
     </div>
   );
 }
 
-export default ItemList;
+export default SelectedItems;

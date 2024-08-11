@@ -1,34 +1,45 @@
-import Link from 'next/link';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './Pagination.module.css';
 import { useTheme } from '../../helpers/Contexts/ThemeConstants';
-import { useSelector, useDispatch } from 'react-redux';
-import { setPage } from '../../store/paginationSlice';
-import { RootState } from '../../store/store';
 
-function Pagination() {
-  const dispatch = useDispatch();
-  const totalPages = 9;
-  const currentPage = useSelector(
-    (state: RootState) => state.pagination.currentPage,
-  );
+interface PaginationProps {
+  totalPages: number;
+  initialPage?: number;
+}
+
+const Pagination = ({ totalPages, initialPage = 1 }: PaginationProps) => {
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const { theme } = useTheme();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const queryPage = searchParams.get('page');
+    const page = queryPage ? parseInt(queryPage, 10) : initialPage;
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  }, [searchParams, initialPage, totalPages]);
 
   const handlePageChange = (page: number) => {
-    dispatch(setPage(page));
+    setCurrentPage(page);
+    router.push(`?page=${page}`);
   };
 
   const renderPageLinks = () => {
     const pageLinks = [];
     for (let i = 1; i <= totalPages; i++) {
       pageLinks.push(
-        <Link key={i} href={`?page=${i}`}>
-          <span
-            onClick={() => handlePageChange(i)}
-            className={`${styles.btnPage} ${styles[theme]} ${currentPage === i ? styles.active : ''}`}
-          >
-            {i}
-          </span>
-        </Link>,
+        <span
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`${styles.btnPage} ${styles[theme]} ${currentPage === i ? styles.active : ''}`}
+        >
+          {i}
+        </span>,
       );
     }
     return pageLinks;
@@ -36,33 +47,25 @@ function Pagination() {
 
   return (
     <div className={styles.pagination}>
-      <Link href={`?page=${currentPage > 1 ? currentPage - 1 : 1}`}>
-        <span
-          onClick={() =>
-            handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
-          }
-          className={`${styles.btnPage} ${styles[theme]}`}
-        >
-          Previous
-        </span>
-      </Link>
-      {renderPageLinks()}
-      <Link
-        href={`?page=${currentPage < totalPages ? currentPage + 1 : totalPages}`}
+      <span
+        onClick={() => handlePageChange(currentPage > 1 ? currentPage - 1 : 1)}
+        className={`${styles.btnPage} ${styles[theme]}`}
       >
-        <span
-          onClick={() =>
-            handlePageChange(
-              currentPage < totalPages ? currentPage + 1 : totalPages,
-            )
-          }
-          className={`${styles.btnPage} ${styles[theme]}`}
-        >
-          Next
-        </span>
-      </Link>
+        Previous
+      </span>
+      {renderPageLinks()}
+      <span
+        onClick={() =>
+          handlePageChange(
+            currentPage < totalPages ? currentPage + 1 : totalPages,
+          )
+        }
+        className={`${styles.btnPage} ${styles[theme]}`}
+      >
+        Next
+      </span>
     </div>
   );
-}
+};
 
 export default Pagination;

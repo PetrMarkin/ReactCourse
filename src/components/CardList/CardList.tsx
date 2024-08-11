@@ -1,21 +1,16 @@
+'use client';
+
+import { Result } from '../../interfaces/interfaces';
 import Card from '../Card/Card';
 import styles from './CardList.module.css';
-import Loader from '../UI/Loader/Loader';
-import { Result } from '../../interfaces/interfaces';
 
 interface CardListProps {
-  initialData: {
-    results: Result[];
-  } | null;
-  isLoading: boolean;
+  data: Result[];
 }
 
-function CardList({ initialData, isLoading }: CardListProps) {
-  const results = initialData?.results;
+function CardList({ data }: CardListProps) {
+  const results = data;
 
-  if (isLoading) {
-    return <Loader />;
-  }
   if (!results || results.length === 0) {
     return <div>No results found</div>;
   }

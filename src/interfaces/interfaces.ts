@@ -57,7 +57,6 @@ export interface ButtonProps {
 
 export interface SearchSectionProps extends InputProps {
   onSearch: () => void;
-  onThrowError: () => void;
 }
 
 export interface ThemeContextType {

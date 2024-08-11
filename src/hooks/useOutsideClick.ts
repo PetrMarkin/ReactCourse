@@ -1,21 +1,33 @@
-import { useEffect, useRef, useState } from 'react';
+'use client';
 
-const useOutsideClick = (initialState: boolean) => {
-  const [isActive, setIsActive] = useState(initialState);
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+const useOutsideClick = (initialValue: boolean) => {
+  const [isActive, setIsActive] = useState(initialValue);
   const ref = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
-      setIsActive(false);
-    }
-  };
+  const handleClick = useCallback(
+    (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setIsActive(false);
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('details');
+        router.push(`?${params.toString()}`);
+      }
+    },
+    [searchParams, router],
+  );
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClick);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [handleClick]);
 
   return { ref, isActive, setIsActive };
 };

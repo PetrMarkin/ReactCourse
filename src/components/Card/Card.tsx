@@ -1,42 +1,39 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from '../../helpers/Contexts/ThemeConstants';
-import { CardProps, RootState } from '../../interfaces/interfaces';
+import { CardProps } from '../../interfaces/interfaces';
 import styles from './Card.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { deselectItem, selectItem } from '../../store/selectedItemsSlice';
+import { useSelectedItems } from '../../helpers/Contexts/SelectedItemsContext';
 
 function Card({ item }: CardProps) {
   const { theme } = useTheme();
   const router = useRouter();
-  const currentPage = router.query.page || '1';
-  const dispatch = useDispatch();
-  const selectedItems = useSelector(
-    (state: RootState) => state.selectedItems.selectedItems,
+  const searchParams = useSearchParams();
+  const { selectedItems, selectItem, deselectItem } = useSelectedItems();
+
+  const isSelected = selectedItems.some(
+    (selectedItem) => selectedItem.url === item.url,
   );
 
   const handleCheckboxChange = () => {
-    if (selectedItems.some((selectedItem) => selectedItem.url === item.url)) {
-      dispatch(deselectItem(item.url));
+    if (isSelected) {
+      deselectItem(item.url);
     } else {
-      dispatch(selectItem(item));
+      selectItem(item);
     }
   };
 
-  const handleCardClick = async (
-    event: React.MouseEvent<HTMLDivElement>,
-  ): Promise<void> => {
+  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLElement).tagName === 'INPUT') {
       return;
     }
     const cardId = item.url.split('/').slice(-2, -1)[0];
-    if (typeof currentPage === 'string') {
-      try {
-        await router.push(`?page=${currentPage}&details=${cardId}`, undefined, {
-          shallow: true,
-        });
-      } catch (error) {
-        console.error('Failed to navigate:', error);
-      }
+    const currentPage = searchParams.get('page') || '1';
+    try {
+      router.push(`?page=${currentPage}&details=${cardId}`);
+    } catch (error) {
+      console.error('Failed to navigate:', error);
     }
   };
 
@@ -51,9 +48,7 @@ function Card({ item }: CardProps) {
         <input
           className={styles.selectedCheckbox}
           type='checkbox'
-          checked={selectedItems.some(
-            (selectedItem) => selectedItem.url === item.url,
-          )}
+          checked={isSelected}
           onChange={handleCheckboxChange}
         />
       </div>
