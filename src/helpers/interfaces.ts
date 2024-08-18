@@ -5,7 +5,7 @@ export interface Form {
   age: number;
   password: string;
   gender: 'male' | 'female' | 'other';
-  image: string;
+  image: string | File | FileList;
   terms: boolean;
   country: string;
 }

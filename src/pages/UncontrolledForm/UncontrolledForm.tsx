@@ -90,15 +90,21 @@ function UncontrolledForm() {
       <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor='name'>Enter name</label>
         <input type='text' id='name' placeholder='name' ref={nameRef} />
-        {errors.name && <p className={styles.errors}>{errors.name}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.name && <p className={styles.errors}>{errors.name}</p>}
+        </div>
 
         <label htmlFor='age'>Enter age</label>
         <input type='number' id='age' placeholder='age' ref={ageRef} />
-        {errors.age && <p className={styles.errors}>{errors.age}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.age && <p className={styles.errors}>{errors.age}</p>}
+        </div>
 
         <label htmlFor='email'>Enter email</label>
         <input type='email' id='email' placeholder='email' ref={emailRef} />
-        {errors.email && <p className={styles.errors}>{errors.email}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.email && <p className={styles.errors}>{errors.email}</p>}
+        </div>
 
         <label htmlFor='password'>Enter password</label>
         <input
@@ -111,11 +117,15 @@ function UncontrolledForm() {
           ref={passwordRef}
           autoComplete='on'
         />
-        {errors.password && <p className={styles.errors}>{errors.password}</p>}
         <div
           className={`${styles.passwordStrength} ${styles[passwordStrength]}`}
         >
           {passwordStrength}
+        </div>
+        <div className={styles.errorsContainer}>
+          {errors.password && (
+            <p className={styles.errors}>{errors.password}</p>
+          )}
         </div>
 
         <label htmlFor='confirmPassword'>Repeat password</label>
@@ -126,9 +136,11 @@ function UncontrolledForm() {
           ref={confirmPasswordRef}
           autoComplete='on'
         />
-        {errors.confirmPassword && (
-          <p className={styles.errors}>{errors.confirmPassword}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.confirmPassword && (
+            <p className={styles.errors}>{errors.confirmPassword}</p>
+          )}
+        </div>
 
         <label htmlFor='gender'>Select gender:</label>
         <select id='gender' ref={genderRef}>
@@ -136,7 +148,9 @@ function UncontrolledForm() {
           <option value='female'>female</option>
           <option value='other'>other</option>
         </select>
-        {errors.gender && <p className={styles.errors}>{errors.gender}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.gender && <p className={styles.errors}>{errors.gender}</p>}
+        </div>
 
         <label htmlFor='country'>Select country:</label>
         <Select
@@ -146,15 +160,21 @@ function UncontrolledForm() {
           onChange={(selectedOption) => (countryRef.current = selectedOption)}
           className={errors.country ? styles.error : ''}
         />
-        {errors.country && <p className={styles.errors}>{errors.country}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.country && <p className={styles.errors}>{errors.country}</p>}
+        </div>
 
         <label htmlFor='file'>Upload picture:</label>
         <input type='file' id='file' accept='.jpg, .jpeg, .png' ref={fileRef} />
-        {errors.image && <p className={styles.errors}>{errors.image}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.image && <p className={styles.errors}>{errors.image}</p>}
+        </div>
 
         <div className={styles.terms}>
           <label htmlFor='terms'>Accept Terms and Conditions agreement</label>
           <input type='checkbox' id='terms' ref={termsRef} />
+        </div>
+        <div className={styles.errorsContainer}>
           {errors.terms && <p className={styles.errors}>{errors.terms}</p>}
         </div>
 

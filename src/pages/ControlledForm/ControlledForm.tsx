@@ -18,7 +18,6 @@ function ControlledForm() {
     handleSubmit,
     control,
     formState: { errors, isValid, isSubmitting },
-    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -35,20 +34,16 @@ function ControlledForm() {
     setPasswordStrength(evaluatePasswordStrength(e.target.value));
   };
 
-  const onSubmit = (data: Form) => {
-    const formDataWithId = {
-      ...data,
-      id: Date.now().toString(),
-    };
-    dispatch(addForm(formDataWithId));
-    navigate('/', { state: { lastFormId: formDataWithId.id } });
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const base64 = await convertToBase64(file);
-      setValue('image', base64, { shouldValidate: true });
+  const onSubmit = async (data: Form) => {
+    if (data.image instanceof FileList) {
+      const image2Base64 = await convertToBase64(data.image[0]);
+      const formDataWithId = {
+        ...data,
+        id: Date.now().toString(),
+        image: image2Base64,
+      };
+      dispatch(addForm(formDataWithId));
+      navigate('/', { state: { lastFormId: formDataWithId.id } });
     }
   };
 
@@ -62,7 +57,11 @@ function ControlledForm() {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='name'>Name</label>
         <input type='text' id='name' placeholder='Name' {...register('name')} />
-        {errors.name && <p className={styles.errors}>{errors.name.message}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.name && (
+            <p className={styles.errors}>{errors.name.message}</p>
+          )}
+        </div>
 
         <label htmlFor='email'>Email</label>
         <input
@@ -71,13 +70,17 @@ function ControlledForm() {
           placeholder='Email'
           {...register('email')}
         />
-        {errors.email && (
-          <p className={styles.errors}>{errors.email.message}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.email && (
+            <p className={styles.errors}>{errors.email.message}</p>
+          )}
+        </div>
 
         <label htmlFor='age'>Age</label>
         <input type='number' id='age' placeholder='Age' {...register('age')} />
-        {errors.age && <p className={styles.errors}>{errors.age.message}</p>}
+        <div className={styles.errorsContainer}>
+          {errors.age && <p className={styles.errors}>{errors.age.message}</p>}
+        </div>
 
         <label htmlFor='password'>Password</label>
         <input
@@ -91,13 +94,15 @@ function ControlledForm() {
           autoComplete='on'
           required
         />
-        {errors.password && (
-          <p className={styles.errors}>{errors.password.message}</p>
-        )}
         <div
           className={`${styles.passwordStrength} ${styles[passwordStrength]}`}
         >
           {passwordStrength}
+        </div>
+        <div className={styles.errorsContainer}>
+          {errors.password && (
+            <p className={styles.errors}>{errors.password.message}</p>
+          )}
         </div>
 
         <label htmlFor='confirmPassword'>Confirm Password</label>
@@ -109,9 +114,11 @@ function ControlledForm() {
           autoComplete='on'
           required
         />
-        {errors.confirmPassword && (
-          <p className={styles.errors}>{errors.confirmPassword.message}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.confirmPassword && (
+            <p className={styles.errors}>{errors.confirmPassword.message}</p>
+          )}
+        </div>
 
         <label htmlFor='gender'>Gender</label>
         <select id='gender' {...register('gender')}>
@@ -119,9 +126,11 @@ function ControlledForm() {
           <option value='female'>female</option>
           <option value='other'>other</option>
         </select>
-        {errors.gender && (
-          <p className={styles.errors}>{errors.gender.message}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.gender && (
+            <p className={styles.errors}>{errors.gender.message}</p>
+          )}
+        </div>
 
         <label htmlFor='country'>Select country:</label>
         <Controller
@@ -145,28 +154,29 @@ function ControlledForm() {
             />
           )}
         />
-        {errors.country && (
-          <p className={styles.errors}>{errors.country.message}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.country && (
+            <p className={styles.errors}>{errors.country.message}</p>
+          )}
+        </div>
 
         <label htmlFor='image'>Image</label>
-        <input
-          type='file'
-          id='file'
-          accept='.jpg, .jpeg, .png'
-          onChange={handleImageUpload}
-        />
-        {errors.image && (
-          <p className={styles.errors}>{errors.image.message}</p>
-        )}
+        <input type='file' id='file' {...register('image')} />
+        <div className={styles.errorsContainer}>
+          {errors.image && (
+            <p className={styles.errors}>{errors.image.message}</p>
+          )}
+        </div>
 
         <div className={styles.terms}>
           <label htmlFor='terms'>Accept Terms and Conditions agreement</label>
           <input type='checkbox' id='terms' {...register('terms')} />
         </div>
-        {errors.terms && (
-          <p className={styles.errors}>{errors.terms.message}</p>
-        )}
+        <div className={styles.errorsContainer}>
+          {errors.terms && (
+            <p className={styles.errors}>{errors.terms.message}</p>
+          )}
+        </div>
 
         <button type='submit' disabled={!isValid || isSubmitting}>
           Submit

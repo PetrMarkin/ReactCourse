@@ -7,10 +7,6 @@ export const convertToBase64 = (file: File): Promise<string> => {
     reader.onerror = (error) => {
       reject(error);
     };
-    if (file.size > 3 * 1024 * 1024) {
-      alert('File size must be less than 3MB');
-    } else {
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
   });
 };

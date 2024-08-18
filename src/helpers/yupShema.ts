@@ -1,10 +1,12 @@
 import * as yup from 'yup';
 
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+
 export const schema = yup.object().shape({
   name: yup
     .string()
     .required('Name is a required field')
-    .matches(/^[A-Z][a-z]*$/, 'First letter should be uppercased'),
+    .matches(/^[A-ZА-ЯЁ][a-zа-яё]+$/, 'First letter should be uppercased'),
   email: yup
     .string()
     .email('Invalid email format')
@@ -23,7 +25,35 @@ export const schema = yup.object().shape({
     .mixed<'male' | 'female' | 'other'>()
     .oneOf(['male', 'female', 'other'])
     .required('Gender is a required field'),
-  image: yup.string().required('Image is required'),
+  image: yup
+    .mixed<File | FileList>()
+    .required('Image is required')
+    .test(
+      'fileSize',
+      'File exceeds the maximum supported size of 3 MB',
+      (value) => {
+        if (!value) return false;
+        if (value instanceof File) {
+          return value && value.size <= 1024 * 1024 * 3;
+        }
+        if (value instanceof FileList) {
+          return value && value[0].size <= 1024 * 1024 * 3;
+        }
+      },
+    )
+    .test(
+      'is-valid-type',
+      'Invalid file extension. Allow downloading only files in PNG, JPG formats.',
+      (value) => {
+        if (!value) return false;
+        if (value instanceof File) {
+          return value && SUPPORTED_FORMATS.includes(value.type);
+        }
+        if (value instanceof FileList) {
+          return value && SUPPORTED_FORMATS.includes(value[0].type);
+        }
+      },
+    ),
   terms: yup
     .boolean()
     .oneOf([true], 'You must accept the terms')

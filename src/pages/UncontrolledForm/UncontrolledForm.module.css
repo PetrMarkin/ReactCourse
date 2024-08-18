@@ -31,7 +31,6 @@
   margin-bottom: 5px;
   font-size: 14px;
   font-weight: bold;
-  margin-top: 20px;
 }
 
 .form button {
@@ -59,7 +58,6 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 20px;
 }
 
 .terms input {
@@ -95,4 +93,11 @@
 .strong {
   color: green;
   background: rgba(0, 255, 0, 0.2);
+}
+
+.errorsContainer {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
