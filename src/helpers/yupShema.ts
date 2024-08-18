@@ -16,7 +16,10 @@ export const schema = yup.object().shape({
     .positive('Age must be positive')
     .integer('Age must be an integer')
     .required('Age is a required field'),
-  password: yup.string().required('Password is a required field'),
+  password: yup
+    .string()
+    .required('Password is a required field')
+    .min(6, 'Password must be at least 6 characters'),
   confirmPassword: yup
     .string()
     .required('Password is a required field')
@@ -32,11 +35,12 @@ export const schema = yup.object().shape({
       'fileSize',
       'File exceeds the maximum supported size of 3 MB',
       (value) => {
-        if (!value) return false;
         if (value instanceof File) {
+          if (!value) return false;
           return value && value.size <= 1024 * 1024 * 3;
         }
         if (value instanceof FileList) {
+          if (!value[0]) return false;
           return value && value[0].size <= 1024 * 1024 * 3;
         }
       },
@@ -47,9 +51,11 @@ export const schema = yup.object().shape({
       (value) => {
         if (!value) return false;
         if (value instanceof File) {
+          if (!value) return false;
           return value && SUPPORTED_FORMATS.includes(value.type);
         }
         if (value instanceof FileList) {
+          if (!value[0]) return false;
           return value && SUPPORTED_FORMATS.includes(value[0].type);
         }
       },

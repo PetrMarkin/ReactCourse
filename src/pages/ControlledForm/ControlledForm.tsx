@@ -87,10 +87,7 @@ function ControlledForm() {
           type='password'
           id='password'
           placeholder='Password'
-          {...register('password')}
-          onChange={(event) => {
-            passwordChange(event);
-          }}
+          {...register('password', { onChange: passwordChange })}
           autoComplete='on'
           required
         />
